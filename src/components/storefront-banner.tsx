@@ -42,7 +42,7 @@ export function StorefrontBanner() {
             {/* Main image */}
             <div className="relative overflow-hidden rounded-2xl shadow-2xl shadow-green-900/10">
               <Image
-                src="/images/fachada-vivero.png"
+                src="/images/cartel-vivero.jpg"
                 alt="Cartel del vivero El Algarrobo sobre pared amarilla"
                 width={700}
                 height={520}
@@ -70,7 +70,9 @@ export function StorefrontBanner() {
                 <MapPin className="h-5 w-5 text-green-700" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-green-950">Av. Alem 815</p>
+                <p className="text-sm font-semibold text-green-950">
+                  Av. Alem 815
+                </p>
                 <p className="text-xs text-green-600">La Rioja, Argentina</p>
               </div>
             </motion.div>
@@ -87,8 +89,7 @@ export function StorefrontBanner() {
               Nuestro local
             </span>
             <h3 className="mt-3 text-3xl font-bold text-green-950 sm:text-4xl">
-              Vení a
-              <span className="text-green-600"> visitarnos</span>
+              Vení a<span className="text-green-600"> visitarnos</span>
             </h3>
             <p className="mt-5 text-lg leading-relaxed text-green-800/70">
               Te esperamos en nuestro vivero con la mejor atención y
@@ -113,7 +114,9 @@ export function StorefrontBanner() {
                   <span className="text-sm font-medium text-green-900">
                     {item.label}:
                   </span>
-                  <span className="text-sm text-green-700/70">{item.value}</span>
+                  <span className="text-sm text-green-700/70">
+                    {item.value}
+                  </span>
                 </motion.div>
               ))}
             </div>

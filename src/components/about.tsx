@@ -48,7 +48,7 @@ export function About() {
               >
                 <div className="relative aspect-3/4 w-full">
                   <Image
-                    src="/images/equipo-1.png"
+                    src="/images/equipo-1.jpg"
                     alt="El equipo trabajando con plantines en El Algarrobo"
                     fill
                     sizes="(max-width: 1024px) 45vw, 25vw"
@@ -67,7 +67,7 @@ export function About() {
               >
                 <div className="relative aspect-3/4 w-full">
                   <Image
-                    src="/images/equipo-2.png"
+                    src="/images/equipo-2.jpg"
                     alt="El dueño del vivero junto a las palmeras"
                     fill
                     sizes="(max-width: 1024px) 45vw, 25vw"
