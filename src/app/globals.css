@@ -94,6 +94,106 @@
   --sidebar-ring: oklch(0.45 0.16 145);
 }
 
+@keyframes hero-float {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-55vh) translateX(var(--particle-drift));
+    opacity: 0.6;
+  }
+  80% {
+    transform: translateY(-85vh) translateX(calc(var(--particle-drift) * -0.5));
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-110vh) translateX(calc(var(--particle-drift) * 0.7));
+    opacity: 0;
+  }
+}
+
+@keyframes hero-sway {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes hero-grow {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes hero-glow {
+  0%,
+  100% {
+    transform: scale(var(--glow-scale-from, 1));
+    opacity: var(--glow-opacity-from, 0.15);
+  }
+  50% {
+    transform: scale(var(--glow-scale-to, 1.15));
+    opacity: var(--glow-opacity-to, 0.25);
+  }
+}
+
+@keyframes hero-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes hero-gradient {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes hero-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes hero-scale-in {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: var(--fade-opacity, 1);
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -107,5 +207,12 @@
   }
   html {
     scroll-behavior: smooth;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }

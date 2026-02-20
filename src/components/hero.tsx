@@ -34,76 +34,85 @@ function GrowingPlant({
   height: number;
   type: number;
 }) {
+  const w = type > 1 ? 60 : 40;
+  const stemX = type > 1 ? 30 : 20;
+  const stemEndX = type > 1 ? 28 : 18;
+
   return (
-    <motion.div
+    <div
       className="absolute bottom-0"
-      style={{ left: x }}
-      initial={{ scaleY: 0, originY: 1 }}
-      animate={{ scaleY: 1 }}
-      transition={{ duration: 1.8, delay, ease: "easeOut" }}
+      style={{
+        left: x,
+        transformOrigin: "bottom",
+        animation: `hero-grow 1.8s ease-out ${delay}s both`,
+      }}
     >
       <svg
-        width={type > 1 ? "60" : "40"}
+        width={w}
         height={height}
-        viewBox={`0 0 ${type > 1 ? 60 : 40} ${height}`}
+        viewBox={`0 0 ${w} ${height}`}
         className="overflow-visible"
       >
-        {/* Stem */}
-        <motion.path
-          d={`M${type > 1 ? 30 : 20} ${height} Q${type > 1 ? 30 : 20} ${height * 0.5} ${type > 1 ? 28 : 18} ${height * 0.15}`}
+        <path
+          d={`M${stemX} ${height} Q${stemX} ${height * 0.5} ${stemEndX} ${height * 0.15}`}
           stroke="url(#stemGrad)"
           strokeWidth="2.5"
           fill="none"
           strokeLinecap="round"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 1.5, delay: delay + 0.3 }}
+          pathLength={1}
+          style={{
+            strokeDasharray: 1,
+            strokeDashoffset: 1,
+            animation: `hero-draw 1.5s ease-out ${delay + 0.3}s both`,
+          }}
         />
 
         {type === 0 && (
           <>
-            {/* Leaf pair */}
-            <motion.ellipse
-              cx={type > 1 ? 18 : 10}
-              cy={height * 0.4}
-              rx="10"
-              ry="5"
-              fill="#22c55e"
-              opacity={0.7}
-              transform={`rotate(-30 10 ${height * 0.4})`}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.6, delay: delay + 1 }}
-            />
-            <motion.ellipse
-              cx={type > 1 ? 42 : 30}
-              cy={height * 0.35}
-              rx="10"
-              ry="5"
-              fill="#16a34a"
-              opacity={0.7}
-              transform={`rotate(30 30 ${height * 0.35})`}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.6, delay: delay + 1.2 }}
-            />
+            <g transform={`rotate(-30 10 ${height * 0.4})`}>
+              <ellipse
+                cx={type > 1 ? 18 : 10}
+                cy={height * 0.4}
+                rx="10"
+                ry="5"
+                fill="#22c55e"
+                opacity={0.7}
+                style={{
+                  transformBox: "fill-box",
+                  transformOrigin: "center",
+                  animation: `hero-scale-in 0.6s ease-out ${delay + 1}s both`,
+                }}
+              />
+            </g>
+            <g transform={`rotate(30 30 ${height * 0.35})`}>
+              <ellipse
+                cx={type > 1 ? 42 : 30}
+                cy={height * 0.35}
+                rx="10"
+                ry="5"
+                fill="#16a34a"
+                opacity={0.7}
+                style={{
+                  transformBox: "fill-box",
+                  transformOrigin: "center",
+                  animation: `hero-scale-in 0.6s ease-out ${delay + 1.2}s both`,
+                }}
+              />
+            </g>
           </>
         )}
 
         {type === 1 && (
-          <motion.circle
+          <circle
             cx="20"
             cy={height * 0.1}
             r="8"
             fill="#f472b6"
             opacity={0.8}
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{
-              duration: 0.8,
-              delay: delay + 1.2,
-              type: "spring",
-              stiffness: 200,
+            style={{
+              transformBox: "fill-box",
+              transformOrigin: "center",
+              animation: `hero-scale-in 0.8s ease-out ${delay + 1.2}s both`,
             }}
           />
         )}
@@ -111,32 +120,43 @@ function GrowingPlant({
         {type === 2 && (
           <>
             {[0, 72, 144, 216, 288].map((angle, i) => {
-              const cx = Math.round((30 + Math.cos((angle * Math.PI) / 180) * 10) * 1000) / 1000;
-              const cy = Math.round((height * 0.1 + Math.sin((angle * Math.PI) / 180) * 10) * 1000) / 1000;
+              const cx =
+                Math.round(
+                  (30 + Math.cos((angle * Math.PI) / 180) * 10) * 1000,
+                ) / 1000;
+              const cy =
+                Math.round(
+                  (height * 0.1 + Math.sin((angle * Math.PI) / 180) * 10) *
+                    1000,
+                ) / 1000;
               return (
-                <motion.ellipse
-                  key={angle}
-                  cx={cx}
-                  cy={cy}
-                  rx="6"
-                  ry="3"
-                  fill={i % 2 === 0 ? "#fbbf24" : "#fb923c"}
-                  opacity={0.8}
-                  transform={`rotate(${angle} ${cx} ${cy})`}
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ duration: 0.4, delay: delay + 1.3 + i * 0.1 }}
-                />
+                <g key={angle} transform={`rotate(${angle} ${cx} ${cy})`}>
+                  <ellipse
+                    cx={cx}
+                    cy={cy}
+                    rx="6"
+                    ry="3"
+                    fill={i % 2 === 0 ? "#fbbf24" : "#fb923c"}
+                    opacity={0.8}
+                    style={{
+                      transformBox: "fill-box",
+                      transformOrigin: "center",
+                      animation: `hero-scale-in 0.4s ease-out ${delay + 1.3 + i * 0.1}s both`,
+                    }}
+                  />
+                </g>
               );
             })}
-            <motion.circle
+            <circle
               cx="30"
               cy={height * 0.1}
               r="4"
               fill="#fde047"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.5, delay: delay + 1.8 }}
+              style={{
+                transformBox: "fill-box",
+                transformOrigin: "center",
+                animation: `hero-scale-in 0.5s ease-out ${delay + 1.8}s both`,
+              }}
             />
           </>
         )}
@@ -148,7 +168,7 @@ function GrowingPlant({
           </linearGradient>
         </defs>
       </svg>
-    </motion.div>
+    </div>
   );
 }
 
@@ -175,78 +195,88 @@ export function Hero() {
         style={{ y: bgY }}
       />
 
-      {/* Organic radial glows */}
+      {/* Organic radial glows — CSS animation, reduced blur on mobile */}
       <div className="pointer-events-none absolute inset-0">
-        <motion.div
-          className="absolute -top-20 -left-20 h-[500px] w-[500px] rounded-full bg-emerald-500/15 blur-[100px]"
-          animate={{ scale: [1, 1.15, 1], opacity: [0.15, 0.25, 0.15] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        <div
+          className="absolute -top-20 -left-20 h-[500px] w-[500px] rounded-full bg-emerald-500/15 blur-[60px] sm:blur-[100px]"
+          style={
+            {
+              animation: "hero-glow 8s ease-in-out infinite",
+              "--glow-scale-from": 1,
+              "--glow-scale-to": 1.15,
+              "--glow-opacity-from": 0.15,
+              "--glow-opacity-to": 0.25,
+            } as React.CSSProperties
+          }
         />
-        <motion.div
-          className="absolute -right-32 top-1/3 h-[600px] w-[600px] rounded-full bg-green-400/10 blur-[120px]"
-          animate={{ scale: [1.1, 1, 1.1], opacity: [0.1, 0.2, 0.1] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        <div
+          className="absolute -right-32 top-1/3 h-[600px] w-[600px] rounded-full bg-green-400/10 blur-[60px] sm:blur-[120px]"
+          style={
+            {
+              animation: "hero-glow 10s ease-in-out infinite",
+              "--glow-scale-from": 1.1,
+              "--glow-scale-to": 1,
+              "--glow-opacity-from": 0.1,
+              "--glow-opacity-to": 0.2,
+            } as React.CSSProperties
+          }
         />
-        <motion.div
-          className="absolute bottom-0 left-1/3 h-[400px] w-[400px] rounded-full bg-lime-400/8 blur-[80px]"
-          animate={{ scale: [1, 1.2, 1], opacity: [0.08, 0.15, 0.08] }}
-          transition={{
-            duration: 7,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2,
-          }}
+        <div
+          className="absolute bottom-0 left-1/3 h-[400px] w-[400px] rounded-full bg-lime-400/8 blur-[40px] sm:blur-[80px]"
+          style={
+            {
+              animation: "hero-glow 7s ease-in-out 2s infinite",
+              "--glow-scale-from": 1,
+              "--glow-scale-to": 1.2,
+              "--glow-opacity-from": 0.08,
+              "--glow-opacity-to": 0.15,
+            } as React.CSSProperties
+          }
         />
       </div>
 
-      {/* Floating pollen/firefly particles */}
+      {/* Floating pollen/firefly particles — CSS animation */}
       <div className="pointer-events-none absolute inset-0">
         {particles.map((p) => (
-          <motion.div
+          <div
             key={p.id}
-            className="absolute rounded-full bg-green-300/60"
-            style={{ left: p.x, width: p.size, height: p.size }}
-            initial={{ bottom: "-5%", opacity: 0 }}
-            animate={{
-              bottom: "105%",
-              opacity: [0, 0.8, 0.6, 0],
-              x: [0, p.drift, -p.drift / 2, p.drift * 0.7],
-            }}
-            transition={{
-              duration: p.duration,
-              repeat: Infinity,
-              delay: p.delay,
-              ease: "easeInOut",
-            }}
+            className="absolute bottom-0 rounded-full bg-green-300/60"
+            style={
+              {
+                left: p.x,
+                width: p.size,
+                height: p.size,
+                "--particle-drift": `${p.drift}px`,
+                animation: `hero-float ${p.duration}s ease-in-out ${p.delay}s infinite`,
+              } as React.CSSProperties
+            }
           />
         ))}
       </div>
 
-      {/* Animated grass at bottom */}
+      {/* Animated grass at bottom — CSS animation */}
       <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-24 sm:h-32">
         {grassBlades.map((blade) => (
-          <motion.div
+          <div
             key={blade.id}
             className="absolute bottom-0 w-[3px] origin-bottom rounded-t-full bg-gradient-to-t from-green-700 to-green-500"
-            style={{ left: blade.x, height: blade.height }}
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: 1 }}
-            transition={{ duration: 1, delay: blade.delay, ease: "easeOut" }}
+            style={{
+              left: blade.x,
+              height: blade.height,
+              animation: `hero-grow 1s ease-out ${blade.delay}s both`,
+            }}
           >
-            <motion.div
+            <div
               className="h-full w-full origin-bottom rounded-t-full bg-gradient-to-t from-green-700 to-green-400"
-              animate={{ rotateZ: [-3, 3, -3] }}
-              transition={{
-                duration: blade.swayDuration,
-                repeat: Infinity,
-                ease: "easeInOut",
+              style={{
+                animation: `hero-sway ${blade.swayDuration}s ease-in-out infinite`,
               }}
             />
-          </motion.div>
+          </div>
         ))}
       </div>
 
-      {/* Growing plants from bottom */}
+      {/* Growing plants — CSS animation */}
       <div className="pointer-events-none absolute bottom-0 left-0 right-0">
         <GrowingPlant x="8%" delay={0.5} height={120} type={0} />
         <GrowingPlant x="18%" delay={1.0} height={90} type={1} />
@@ -256,60 +286,77 @@ export function Hero() {
         <GrowingPlant x="92%" delay={0.9} height={100} type={2} />
       </div>
 
-      {/* Vine branches from the sides */}
+      {/* Vine branches — CSS animation */}
       <div className="pointer-events-none absolute inset-0">
-        <motion.svg
-          className="absolute -left-4 top-16 h-80 w-40 opacity-20"
+        <svg
+          className="absolute -left-4 top-16 h-80 w-40"
           viewBox="0 0 160 320"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 0.2 }}
-          transition={{ duration: 3, delay: 1 }}
+          style={
+            {
+              "--fade-opacity": 0.2,
+              animation: "hero-fade-in 3s ease-out 1s both",
+            } as React.CSSProperties
+          }
         >
-          <motion.path
+          <path
             d="M0 40 Q80 60 60 120 Q40 180 80 220 Q120 260 60 320"
             stroke="#4ade80"
             strokeWidth="3"
             fill="none"
             strokeLinecap="round"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 2.5, delay: 1, ease: "easeInOut" }}
+            pathLength={1}
+            style={{
+              strokeDasharray: 1,
+              strokeDashoffset: 1,
+              animation: "hero-draw 2.5s ease-in-out 1s both",
+            }}
           />
           {[60, 120, 220].map((cy, i) => (
-            <motion.ellipse
+            <g
               key={cy}
-              cx={i % 2 === 0 ? 50 : 70}
-              cy={cy}
-              rx="16"
-              ry="8"
-              fill="#22c55e"
-              opacity={0.5}
               transform={`rotate(${i % 2 === 0 ? -25 : 25} ${i % 2 === 0 ? 50 : 70} ${cy})`}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.6, delay: 1.5 + i * 0.4 }}
-            />
+            >
+              <ellipse
+                cx={i % 2 === 0 ? 50 : 70}
+                cy={cy}
+                rx="16"
+                ry="8"
+                fill="#22c55e"
+                opacity={0.5}
+                style={{
+                  transformBox: "fill-box",
+                  transformOrigin: "center",
+                  animation: `hero-scale-in 0.6s ease-out ${1.5 + i * 0.4}s both`,
+                }}
+              />
+            </g>
           ))}
-        </motion.svg>
+        </svg>
 
-        <motion.svg
-          className="absolute -right-4 top-32 h-64 w-32 opacity-20"
+        <svg
+          className="absolute -right-4 top-32 h-64 w-32"
           viewBox="0 0 128 256"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.2 }}
-          transition={{ duration: 2, delay: 1.5 }}
+          style={
+            {
+              "--fade-opacity": 0.2,
+              animation: "hero-fade-in 2s ease-out 1.5s both",
+            } as React.CSSProperties
+          }
         >
-          <motion.path
+          <path
             d="M128 20 Q60 60 80 120 Q100 160 50 200 Q20 230 60 256"
             stroke="#86efac"
             strokeWidth="2.5"
             fill="none"
             strokeLinecap="round"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 2, delay: 1.5, ease: "easeInOut" }}
+            pathLength={1}
+            style={{
+              strokeDasharray: 1,
+              strokeDashoffset: 1,
+              animation: "hero-draw 2s ease-in-out 1.5s both",
+            }}
           />
-        </motion.svg>
+        </svg>
       </div>
 
       {/* Main content with parallax */}
@@ -336,14 +383,15 @@ export function Hero() {
           >
             Tu espacio verde
             <br />
-            <motion.span
+            <span
               className="inline-block bg-gradient-to-r from-green-300 via-emerald-300 to-lime-300 bg-clip-text text-transparent"
-              animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              style={{ backgroundSize: "200% 200%" }}
+              style={{
+                backgroundSize: "200% 200%",
+                animation: "hero-gradient 6s ease-in-out infinite",
+              }}
             >
               comienza aquí
-            </motion.span>
+            </span>
           </motion.h1>
 
           <motion.p
@@ -382,26 +430,25 @@ export function Hero() {
         </div>
       </motion.div>
 
-      {/* Bottom gradient fade for smooth transition */}
+      {/* Bottom gradient fade */}
       <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — CSS bounce, FM only for entry fade */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2, duration: 1 }}
         className="absolute bottom-10 left-1/2 z-20 -translate-x-1/2"
       >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        <div
           className="flex flex-col items-center gap-2"
+          style={{ animation: "hero-bounce 2s ease-in-out infinite" }}
         >
           <span className="text-xs font-medium tracking-wider text-green-300/50 uppercase">
             Descubrí más
           </span>
           <ArrowDown className="h-5 w-5 text-green-300/50" />
-        </motion.div>
+        </div>
       </motion.div>
     </section>
   );
